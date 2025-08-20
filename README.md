@@ -1,5 +1,6 @@
 # Earth
 
+![Earth, the final frontier](https://github.com/gabereiser/earth/blob/main/docs/screenshot.png?raw=true)
 
 ### Summary
 
