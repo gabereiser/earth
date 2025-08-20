@@ -9,22 +9,22 @@ import { setupControls } from './controls/orbit';
 const engine = new Engine();
 
 const stars = engine.textureLoader.load(
-  "/8k_stars.jpg"
+  "8k_stars.jpg"
 );
 const diffuse = engine.textureLoader.load(
-  "/planets/earth/8k_earth_daymap.jpg"
+  "planets/earth/8k_earth_daymap.jpg"
 );
 const normal = engine.textureLoader.load(
-  "/planets/earth/8k_earth_normal_map.tif"
+  "planets/earth/8k_earth_normal_map.tif"
 );
 const specular = engine.textureLoader.load(
-  "/planets/earth/8k_earth_specular_map.tif"
+  "planets/earth/8k_earth_specular_map.tif"
 );
 const emissive = engine.textureLoader.load(
-  "/planets/earth/8k_earth_nightmap.jpg"
+  "planets/earth/8k_earth_nightmap.jpg"
 );
 const clouds = engine.textureLoader.load(
-  "/planets/earth/8k_earth_clouds.png"
+  "planets/earth/8k_earth_clouds.png"
 )
 const maxAnisotropy = engine.renderer.capabilities.getMaxAnisotropy();
 stars.anisotropy = maxAnisotropy;
