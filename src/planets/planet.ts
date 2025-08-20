@@ -62,7 +62,6 @@ export class Planet extends THREE.Group {
 			blending: THREE.CustomBlending,
 			blendSrc: THREE.SrcAlphaFactor,
 			blendDst: THREE.DstColorFactor,
-			lights: false,
 
 		})
 		this.mesh = new THREE.Mesh(
