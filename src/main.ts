@@ -46,7 +46,7 @@ engine.scene.add(planet);
 engine.camera = setupControls(engine.camera);
 engine.camera.position.z = 1.25;
 
-window.addEventListener("resize", (evt) => { engine.resize(); });
+window.addEventListener("resize", (_: UIEvent) => { engine.resize(); });
 
 const render = () => {
   engine.render();

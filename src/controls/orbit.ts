@@ -7,12 +7,12 @@ const pi_over2 = Math.PI / 2, mouse: THREE.Vector2 = new THREE.Vector2();
 
 export function setupControls(camera: Camera): Camera {
 
-	document.addEventListener('mousedown', (e) => {
+	document.addEventListener('mousedown', (e: MouseEvent) => {
 		mp_refx = (e.clientX / innerWidth) * 2 - 1;
 		mp_refy = (e.clientY / innerHeight) * 2 + 1;
 		isClicking = true;
 	});
-	document.addEventListener('mousemove', (e) => {
+	document.addEventListener('mousemove', (e: MouseEvent) => {
 		const innermx = (e.clientX / innerWidth) * 2 - 1;
 
 		const innermy = - (e.clientY / innerHeight) * 2 - 1;
@@ -26,7 +26,7 @@ export function setupControls(camera: Camera): Camera {
 			};
 		};
 	});
-	document.addEventListener('mouseup', (e) => { if (isClicking) { isClicking = false; }; });
+	document.addEventListener('mouseup', (_: MouseEvent) => { if (isClicking) { isClicking = false; }; });
 	document.addEventListener('wheel', (event) => {
 		if (camera.cam_mag < 12) {
 			if (camera.cam_mag > .205) { camera.cam_mag += Math.pow(camera.cam_mag, 1.5) * event.deltaY / (20000); }
