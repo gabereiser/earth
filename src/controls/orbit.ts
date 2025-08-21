@@ -62,6 +62,7 @@ export function setupTouchControls(camera: Camera): Camera {
 		}
 	});
 	document.addEventListener("touchmove", (e: TouchEvent) => {
+		e.preventDefault(); // safari likes to pinch out of window.
 		if (e.touches.length > 1) {
 			// we are scrolling/zooming
 			const event = e.touches.item(0);
