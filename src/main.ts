@@ -54,14 +54,16 @@ emissive.anisotropy = maxAnisotropy;
 const ambient = new THREE.AmbientLight(0x000000); // space is black yo
 engine.scene.add(ambient);
 
-const sun = new THREE.PointLight(0xffffff, 3.5);
-sun.position.x = 1; // this is also set in the shaders uniforms, must always be normalized
+const sun = new THREE.DirectionalLight(0xffffff, 3.5);
+sun.position.x = 10; // this is also set in the shaders uniforms, must always be normalized
+sun.position.y = 0;
+sun.position.z = 0;
 engine.scene.add(sun);
 
 
 const planet = new Planet(diffuse, emissive, clouds)
 planet.build();
-
+sun.target = planet;
 engine.scene.add(planet);
 
 engine.camera = setupControls(engine.camera);

@@ -63,7 +63,7 @@ export class Planet extends THREE.Group {
 			lights: false,
 		});
 		this.cloudMaterial = new THREE.MeshStandardMaterial({
-			color: 0xffffff,
+			//color: 0xffffff,
 			map: this.cloudAlpha,
 			alphaMap: this.cloudAlpha,
 			bumpMap: this.cloudAlpha,
@@ -71,13 +71,9 @@ export class Planet extends THREE.Group {
 			transparent: true,
 			depthWrite: false,
 			dithering: true,
-			blending: THREE.CustomBlending,
-			blendColor: 0xffffff,
-			blendEquation: THREE.AddEquation,
-			blendSrc: THREE.SrcAlphaFactor,
-			blendDst: THREE.OneFactor,
-			blendSrcAlpha: THREE.SrcAlphaFactor,
-			blendDstAlpha: THREE.OneFactor
+			blending: THREE.AdditiveBlending,
+			roughness: 1,
+			metalness: 0,
 
 		})
 		this.mesh = new THREE.Mesh(
@@ -115,7 +111,7 @@ export class Planet extends THREE.Group {
 		// we don't rotate the planet mesh
 		// instead we shift the texture uv's.
 		// this is due to an issue with the shader and the modelViewMatrix
-		this.clouds?.rotateY(0.00002);
+		this.clouds?.rotateY(0.00005);
 	}
 
 	dispose() {
