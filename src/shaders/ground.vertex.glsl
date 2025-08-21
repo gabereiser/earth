@@ -72,7 +72,7 @@ void main(void)
   // Calculate the attenuation factor for the ground
   c0 = v3Attenuate;
   c1 = v3FrontColor * (v3InvWavelength * fKrESun + fKmESun);
-  vUv = uv - vec2(time * 0.01,0);
+  vUv = uv - vec2(time * 0.0001,0); // earth rotates slowly counter-clockwise from north pole
   vNormal = normal;
   gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 }

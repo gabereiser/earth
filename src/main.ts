@@ -9,13 +9,14 @@ import { setupControls } from './controls/orbit';
 const engine = new Engine();
 const clock = new THREE.Clock();
 
+// right-handed coordinates means z is *facing* you. y is up. x is right.
 const stars = engine.cubeLoader.load([
-  "skybox/right.png",
-  "skybox/left.png",
-  "skybox/top.png",
-  "skybox/bottom.png",
-  "skybox/front.png",
-  "skybox/back.png"
+  "skybox/right.png", //px
+  "skybox/left.png", //-px
+  "skybox/top.png", //py
+  "skybox/bottom.png", //-py
+  "skybox/back.png", //pz
+  "skybox/front.png" //-pz
 ], (texture) => {
   engine.scene.background = texture;
 });
@@ -47,15 +48,18 @@ const clouds = engine.textureLoader.load(
     t.wrapT = THREE.RepeatWrapping;
   })
 const maxAnisotropy = engine.renderer.capabilities.getMaxAnisotropy();
+stars.anisotropy = maxAnisotropy;
 diffuse.anisotropy = maxAnisotropy;
 emissive.anisotropy = maxAnisotropy;
 
-const ambient = new THREE.AmbientLight(0x000000);
+const ambient = new THREE.AmbientLight(0x000000); // space is black yo
 engine.scene.add(ambient);
 
 const sun = new THREE.PointLight(0xffffff, 1);
-sun.position.x = 1;
+sun.position.x = 1; // this is also set in the shaders uniforms, must always be normalized
 engine.scene.add(sun);
+
+
 const planet = new Planet(diffuse, emissive, clouds)
 planet.build();
 

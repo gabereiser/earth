@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import { Camera } from './camera';
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { EffectComposer, SMAAPreset, ToneMappingMode } from 'postprocessing';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OutputPass, RenderPass, SMAAPass } from 'three/examples/jsm/Addons.js';
+import { ToneMappingEffect, EffectPass, RenderPass, SMAAEffect } from 'postprocessing';
 import { Planet } from '../planets/planet';
 
 export class Engine {
@@ -19,7 +19,7 @@ export class Engine {
 	composer: EffectComposer
 
 	constructor() {
-		this.renderer = new THREE.WebGLRenderer({ antialias: true });
+		this.renderer = new THREE.WebGLRenderer({ antialias: false, stencil: false, depth: false });
 		this.renderer.setClearColor(0x000000, 1);
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -32,15 +32,21 @@ export class Engine {
 		this.cubeLoader = new THREE.CubeTextureLoader();
 		this.loader = new GLTFLoader();
 		//this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-		this.composer = new EffectComposer(this.renderer);
+		this.composer = new EffectComposer(this.renderer, {
+			frameBufferType: THREE.HalfFloatType
+		});
 		this.composer.setSize(window.innerWidth, window.innerHeight);
-		this.composer.setPixelRatio(window.devicePixelRatio);
 
-		this.composer.addPass(new RenderPass(this.scene, this.camera, null, null, null));
+		this.composer.addPass(new RenderPass(this.scene, this.camera));
 
-		this.composer.addPass(new SMAAPass());
-		this.composer.addPass(new OutputPass());
-		//(this.controls as OrbitControls).enableZoom = false;
+		this.composer.addPass(new EffectPass(this.camera, new ToneMappingEffect({
+			adaptive: true,
+			mode: ToneMappingMode.OPTIMIZED_CINEON,
+			resolution: 1.0,
+		}), new SMAAEffect({
+			preset: SMAAPreset.HIGH
+		})));
+
 		document.body.appendChild(this.renderer.domElement)
 	}
 
