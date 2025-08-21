@@ -54,7 +54,7 @@ emissive.anisotropy = maxAnisotropy;
 const ambient = new THREE.AmbientLight(0x000000); // space is black yo
 engine.scene.add(ambient);
 
-const sun = new THREE.PointLight(0xffffff, 1);
+const sun = new THREE.PointLight(0xffffff, 3.5);
 sun.position.x = 1; // this is also set in the shaders uniforms, must always be normalized
 engine.scene.add(sun);
 
