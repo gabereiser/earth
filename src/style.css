@@ -43,3 +43,50 @@ body {
   margin: 0;
   padding: 0;
 }
+
+#transition {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100svw;
+  height: 100svh;
+  min-width: 100vw;
+  min-height: 100vh;
+  background: black;
+  display: block;
+  z-index: 2;
+  transition: all 5s linear;
+  opacity: 1
+}
+
+#transition.invisible {
+  animation: 8s linear 5s forwards fadeOut;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    display: block;
+    visibility: visible;
+  }
+
+  to {
+    opacity: 0;
+    display: none;
+    visibility: hidden;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    display: hidden;
+    visibility: hidden;
+  }
+
+  to {
+    opacity: 1;
+    display: block;
+    visibility: visible;
+  }
+}

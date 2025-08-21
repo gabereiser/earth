@@ -82,3 +82,14 @@ const render = () => {
 
 }
 engine.renderer.setAnimationLoop(render);
+const transitionDiv = document.createElement("div");
+document.body.appendChild(transitionDiv);
+
+transitionDiv.id = "transition";
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Done");
+  transitionDiv.classList.add("invisible");
+})
+
+
