@@ -4,7 +4,7 @@ import './style.css'
 import { Engine } from './core/engine';
 import { Planet } from './planets/planet';
 
-import { setupControls } from './controls/orbit';
+import { setupControls, setupTouchControls } from './controls/orbit';
 
 const engine = new Engine();
 const clock = new THREE.Clock();
@@ -66,6 +66,8 @@ planet.build();
 engine.scene.add(planet);
 
 engine.camera = setupControls(engine.camera);
+engine.camera = setupTouchControls(engine.camera);
+
 engine.camera.position.z = 1.25;
 
 planet._ground_update(engine.camera);
