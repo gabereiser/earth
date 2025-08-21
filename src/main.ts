@@ -43,7 +43,6 @@ const clouds = engine.textureLoader.load(
   , (t) => {
     t.minFilter = THREE.LinearFilter;
     t.magFilter = THREE.LinearFilter;
-    t.generateMipmaps = true;
     t.wrapS = THREE.RepeatWrapping;
     t.wrapT = THREE.RepeatWrapping;
   })

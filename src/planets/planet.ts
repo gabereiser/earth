@@ -63,19 +63,20 @@ export class Planet extends THREE.Group {
 		});
 		this.cloudMaterial = new THREE.MeshStandardMaterial({
 			color: 0xffffff,
+			map: this.cloudAlpha,
 			alphaMap: this.cloudAlpha,
 			bumpMap: this.cloudAlpha,
-			bumpScale: 4.0,
+			bumpScale: 16.0,
 			transparent: true,
 			depthWrite: false,
-			dithering: false,
+			dithering: true,
 			blending: THREE.CustomBlending,
+			blendColor: 0xffffff,
+			blendEquation: THREE.AddEquation,
 			blendSrc: THREE.SrcAlphaFactor,
-			blendDst: THREE.DstColorFactor,
+			blendDst: THREE.OneFactor,
 			blendSrcAlpha: THREE.SrcAlphaFactor,
-			blendDstAlpha: THREE.DstAlphaFactor,
-			alphaToCoverage: true,
-			lights: false,
+			blendDstAlpha: THREE.OneFactor
 
 		})
 		this.mesh = new THREE.Mesh(

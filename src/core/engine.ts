@@ -23,7 +23,7 @@ export class Engine {
 		this.renderer.setClearColor(0x000000, 1);
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		this.renderer.setPixelRatio(window.devicePixelRatio);
-		this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+		this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
 
 		this.scene = new THREE.Scene();
 
@@ -41,10 +41,13 @@ export class Engine {
 
 		this.composer.addPass(new EffectPass(this.camera, new ToneMappingEffect({
 			adaptive: true,
-			mode: ToneMappingMode.OPTIMIZED_CINEON,
+			mode: ToneMappingMode.REINHARD2_ADAPTIVE,
 			resolution: 1.0,
+			whitePoint: 0xffffff,
+			middleGrey: 0x888888,
+			adaptationRate: 0.9
 		}), new SMAAEffect({
-			preset: SMAAPreset.HIGH
+			preset: SMAAPreset.ULTRA
 		})));
 
 		document.body.appendChild(this.renderer.domElement)
