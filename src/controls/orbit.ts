@@ -35,27 +35,30 @@ export function setupControls(camera: Camera): Camera {
 	});
 	return camera;
 }
-let lastZoomTouch: Touch | null;
+let pinchFactor: number = 0;
+let pinchDistance: number = 0;
 export function setupTouchControls(camera: Camera): Camera {
 	document.addEventListener("touchcancel", (_: TouchEvent) => {
 		isClicking = false;
+		pinchFactor = 0;
 	});
 	document.addEventListener("touchend", (e: TouchEvent) => {
-		e.preventDefault();
 		if (e.touches.length > 1) {
-			lastZoomTouch = null;
+			pinchFactor = 0;
 		} else {
 			isClicking = false;
 		}
 	});
 	document.addEventListener("touchstart", (e: TouchEvent) => {
-		e.preventDefault();
 		if (e.touches.length > 1) {
 			//we are scrolling/zooming
-			const event = e.touches.item(e.touches.length - 1); //people normally scroll with the second touch
-			if (lastZoomTouch == null) {
-				lastZoomTouch = event!;
+			// calculate the distance between touches as a factor of len(P1 - P2)
+			const points = []
+			for (const t of e.touches) {
+				points.push(new THREE.Vector2(t.clientX, t.clientY))
 			}
+			pinchDistance = points[0].sub(points[1]).length();
+
 		} else {
 			const event = e.touches.item(0);
 			mp_refx = (event!.clientX / innerWidth) * 2 - 1;
@@ -64,17 +67,20 @@ export function setupTouchControls(camera: Camera): Camera {
 		}
 	});
 	document.addEventListener("touchmove", (e: TouchEvent) => {
-		e.preventDefault();
 		if (e.touches.length > 1) {
 			// we are scrolling/zooming
-			const event = e.touches.item(e.touches.length - 1); //people normally scroll with the second touch
-			const delta = new THREE.Vector2(event!.clientX - lastZoomTouch!.clientX, event!.clientY - lastZoomTouch!.clientY);
-			if (camera.cam_mag < 12) {
-				if (camera.cam_mag > .105) { camera.cam_mag += Math.pow(camera.cam_mag, 1.5) * delta.y / (20000); }
-				else { if (delta.y > 0) { camera.cam_mag += Math.pow(camera.cam_mag, 1.5) * delta.y / (20000); } }
+			// calculate the distance between touches as a factor of len(P1 - P2)
+			const points = []
+			for (const t of e.touches) {
+				points.push(new THREE.Vector2(t.clientX, t.clientY))
 			}
-			else { if (delta.y < 0) { camera.cam_mag += Math.pow(camera.cam_mag, 1.5) * delta.y / (20000); }; };
-			lastZoomTouch = event!
+			const d = points[0].sub(points[1]).length();
+			pinchFactor = pinchDistance - d;
+			if (camera.cam_mag < 12) {
+				if (camera.cam_mag > .105) { camera.cam_mag += Math.pow(camera.cam_mag, 1.5) * pinchFactor / (20000); }
+				else { if (pinchFactor > 0) { camera.cam_mag += Math.pow(camera.cam_mag, 1.5) * pinchFactor / (20000); } }
+			}
+			else { if (pinchFactor < 0) { camera.cam_mag += Math.pow(camera.cam_mag, 1.5) * pinchFactor / (20000); }; };
 		} else {
 			const event = e.touches.item(0);
 			const innermx = (event!.clientX / innerWidth) * 2 - 1;
