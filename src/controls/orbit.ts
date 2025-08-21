@@ -62,7 +62,6 @@ export function setupTouchControls(camera: Camera): Camera {
 		}
 	});
 	document.addEventListener("touchmove", (e: TouchEvent) => {
-		e.preventDefault(); // safari likes to pinch out of window.
 		if (e.touches.length > 1) {
 			// we are scrolling/zooming
 			const event = e.touches.item(0);
@@ -87,6 +86,18 @@ export function setupTouchControls(camera: Camera): Camera {
 				};
 			};
 		}
+	});
+	// disable gestures to prevent mobile devices from fucking with the view.
+	document.addEventListener("gesturestart", function (e) {
+		e.preventDefault();
+	});
+
+	document.addEventListener("gesturechange", function (e) {
+		e.preventDefault();
+	});
+
+	document.addEventListener("gestureend", function (e) {
+		e.preventDefault();
 	});
 	return camera;
 }
