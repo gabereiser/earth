@@ -47,7 +47,7 @@ export class Engine {
 			middleGrey: 0x888888,
 			adaptationRate: 0.9
 		}), new SMAAEffect({
-			preset: SMAAPreset.ULTRA
+			preset: SMAAPreset.MEDIUM
 		})));
 
 		document.body.appendChild(this.renderer.domElement)

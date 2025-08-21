@@ -37,6 +37,7 @@ export class Planet extends THREE.Group {
 		this.material!.uniforms.fCameraHeight2.value = r_mag * r_mag;
 		this.material!.uniforms.v3LightPosition.value = new THREE.Vector3(1, 0, 0);
 		this.material!.uniforms.time.value = this.time;
+		this.material!.uniforms.fNightScale.value = 2.5;
 	}
 
 	_atmosphere_update(camera: Camera) {
