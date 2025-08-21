@@ -3,9 +3,8 @@ import { Camera } from './camera';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { Sky } from 'three/addons/objects/Sky.js';
 import { OutputPass, RenderPass, SMAAPass } from 'three/examples/jsm/Addons.js';
-
+import { Planet } from '../planets/planet';
 
 export class Engine {
 	loader: GLTFLoader
@@ -61,18 +60,16 @@ export class Engine {
 	setControls(controls: OrbitControls | THREE.Controls<any>) {
 		this.controls = controls;
 	}
-
+	update() {
+		this.camera.orbitX(0.0001);
+		this.camera.update();
+		this.camera.updateProjectionMatrix();
+	}
 	render() {
 		this.camera.update();
 		this.camera.updateProjectionMatrix();
-		for (const o of this.scene.children) {
-			if (o instanceof THREE.Group) {
-				//@ts-ignore
-				o.render(this.camera)
-			}
-		}
-		//this.renderer.render(this.scene, this.camera);
 		this.composer.render();
+
 	}
 
 	dispose() {

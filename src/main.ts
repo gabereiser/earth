@@ -7,6 +7,8 @@ import { Planet } from './planets/planet';
 import { setupControls } from './controls/orbit';
 
 const engine = new Engine();
+const clock = new THREE.Clock();
+
 const stars = engine.cubeLoader.load([
   "skybox/right.png",
   "skybox/left.png",
@@ -19,19 +21,31 @@ const stars = engine.cubeLoader.load([
 });
 const diffuse = engine.textureLoader.load(
   "planets/earth/8k_earth_daymap.jpg"
-);
-const normal = engine.textureLoader.load(
-  "planets/earth/8k_earth_normal_map.tif"
-);
-const specular = engine.textureLoader.load(
-  "planets/earth/8k_earth_specular_map.tif"
-);
+  , (t) => {
+    t.minFilter = THREE.LinearFilter;
+    t.magFilter = THREE.LinearFilter;
+    t.generateMipmaps = true;
+    t.wrapS = THREE.RepeatWrapping;
+    t.wrapT = THREE.RepeatWrapping;
+  });
 const emissive = engine.textureLoader.load(
   "planets/earth/8k_earth_nightmap.jpg"
-);
+  , (t) => {
+    t.minFilter = THREE.LinearFilter;
+    t.magFilter = THREE.LinearFilter;
+    t.generateMipmaps = true;
+    t.wrapS = THREE.RepeatWrapping;
+    t.wrapT = THREE.RepeatWrapping;
+  });
 const clouds = engine.textureLoader.load(
   "planets/earth/8k_earth_clouds.png"
-)
+  , (t) => {
+    t.minFilter = THREE.LinearFilter;
+    t.magFilter = THREE.LinearFilter;
+    t.generateMipmaps = true;
+    t.wrapS = THREE.RepeatWrapping;
+    t.wrapT = THREE.RepeatWrapping;
+  })
 const maxAnisotropy = engine.renderer.capabilities.getMaxAnisotropy();
 diffuse.anisotropy = maxAnisotropy;
 emissive.anisotropy = maxAnisotropy;
@@ -42,7 +56,7 @@ engine.scene.add(ambient);
 const sun = new THREE.PointLight(0xffffff, 1);
 sun.position.x = 1;
 engine.scene.add(sun);
-const planet = new Planet(diffuse, emissive, normal, clouds)
+const planet = new Planet(diffuse, emissive, clouds)
 planet.build();
 
 engine.scene.add(planet);
@@ -50,10 +64,16 @@ engine.scene.add(planet);
 engine.camera = setupControls(engine.camera);
 engine.camera.position.z = 1.25;
 
+planet._ground_update(engine.camera);
+planet._atmosphere_update(engine.camera);
+
 window.addEventListener("resize", (_: UIEvent) => { engine.resize(); });
 
 const render = () => {
   engine.render();
-  engine.camera.orbitX(0.001);
+  planet.update(clock.getDelta());
+  planet._ground_update(engine.camera);
+  planet._atmosphere_update(engine.camera);
+
 }
 engine.renderer.setAnimationLoop(render);

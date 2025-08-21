@@ -6,18 +6,17 @@ const atmosphere = {
 	ESun: 20.0,
 	g: -0.950,
 	innerRadius: .100,
-	outerRadius: .1025,
+	outerRadius: .105,
 	wavelength: [0.650, 0.570, 0.475],
 	scaleDepth: 0.25,
 	mieScaleDepth: 0.1
 };
-const SkyboxUniforms = {
-	tDiffuse: {
-		type: "t",
-		value: 0
-	}
-}
+
 const AtmUniforms = {
+	time: {
+		type: "f",
+		value: 0
+	},
 	v3LightPosition: {
 		type: "v3",
 		value: new THREE.Vector3(1, 0, 0)
@@ -98,10 +97,6 @@ const AtmUniforms = {
 		type: "f",
 		value: 3.0
 	},
-	tDisplacement: {
-		type: "t",
-		value: 0
-	},
 	tSkyboxDiffuse: {
 		type: "t",
 		value: 0
@@ -119,10 +114,6 @@ const GndUniforms = {
 		value: 0
 	} as THREE.IUniform,
 	tDiffuseNight: {
-		type: "t",
-		value: 0
-	} as THREE.IUniform,
-	tBump: {
 		type: "t",
 		value: 0
 	} as THREE.IUniform

@@ -15,13 +15,12 @@ uniform float fKm4PI;           // Km * 4 * PI
 uniform float fScale;           // 1 / (fOuterRadius - fInnerRadius)
 uniform float fScaleDepth;        // The scale depth (i.e. the altitude at which the atmosphere's average density is found)
 uniform float fScaleOverScaleDepth;  // fScale / fScaleDepth
+uniform float time;
 uniform sampler2D tDiffuse;
-varying vec3 v3Direction;
 varying vec3 c0;
 varying vec3 c1;
 varying vec3 vNormal;
 varying vec2 vUv;
-varying mat3 TBN;
 
 const int nSamples = 3;
 const float fSamples = 3.0;
@@ -73,10 +72,7 @@ void main(void)
   // Calculate the attenuation factor for the ground
   c0 = v3Attenuate;
   c1 = v3FrontColor * (v3InvWavelength * fKrESun + fKmESun);
-  vUv = uv;
+  vUv = uv - vec2(time * 0.01,0);
   vNormal = normal;
-  vec3 vTangent = normalize(tangent.xyz);
-  vec3 vBitangent = normalize(cross(vNormal, vTangent) * tangent.w);
-  TBN = mat3(vTangent, vBitangent, vNormal);
   gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 }
