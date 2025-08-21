@@ -16,7 +16,7 @@ jobs:
     - name: Build
       run: |
         npm i
-        npm run build
+        npm run pages
     - name: Update pages artifact
       uses: actions/upload-pages-artifact@v3
       with:

@@ -7,10 +7,16 @@ import { Planet } from './planets/planet';
 import { setupControls } from './controls/orbit';
 
 const engine = new Engine();
-
-const stars = engine.textureLoader.load(
-  "8k_stars.jpg"
-);
+const stars = engine.cubeLoader.load([
+  "skybox/right.png",
+  "skybox/left.png",
+  "skybox/top.png",
+  "skybox/bottom.png",
+  "skybox/front.png",
+  "skybox/back.png"
+], (texture) => {
+  engine.scene.background = texture;
+});
 const diffuse = engine.textureLoader.load(
   "planets/earth/8k_earth_daymap.jpg"
 );
@@ -27,11 +33,9 @@ const clouds = engine.textureLoader.load(
   "planets/earth/8k_earth_clouds.png"
 )
 const maxAnisotropy = engine.renderer.capabilities.getMaxAnisotropy();
-stars.anisotropy = maxAnisotropy;
 diffuse.anisotropy = maxAnisotropy;
 emissive.anisotropy = maxAnisotropy;
 
-engine.scene.background = stars;
 const ambient = new THREE.AmbientLight(0x000000);
 engine.scene.add(ambient);
 

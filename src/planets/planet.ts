@@ -57,8 +57,12 @@ export class Planet extends THREE.Group {
 		});
 		this.cloudMaterial = new THREE.MeshStandardMaterial({
 			alphaMap: this.cloudAlpha,
+			bumpMap: this.cloudAlpha,
+			bumpScale: 1.0,
+			shadowSide: THREE.FrontSide,
 			transparent: true,
 			depthWrite: false,
+			dithering: true,
 			blending: THREE.CustomBlending,
 			blendSrc: THREE.SrcAlphaFactor,
 			blendDst: THREE.DstColorFactor,
@@ -71,7 +75,7 @@ export class Planet extends THREE.Group {
 		this.mesh!.geometry.computeTangents();
 
 		this.clouds = new THREE.Mesh(
-			new THREE.SphereGeometry(radius * 1.005, 64, 128),
+			new THREE.SphereGeometry(radius * 1.0005, 64, 128),
 			this.cloudMaterial
 		);
 		this.atmosphereMaterial = new THREE.ShaderMaterial({
@@ -84,7 +88,7 @@ export class Planet extends THREE.Group {
 			lights: false,
 		});
 		this.atmosphere = new THREE.Mesh(
-			new THREE.SphereGeometry(radius * 1.025, 500, 500),
+			new THREE.SphereGeometry(radius * 1.005, 64, 128),
 			this.atmosphereMaterial
 		);
 		//this.mesh.rotateX(0.29); // earth has a tilt positive in the summer, negative in the winter.

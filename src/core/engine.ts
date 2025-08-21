@@ -6,8 +6,10 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { Sky } from 'three/addons/objects/Sky.js';
 import { OutputPass, RenderPass, SMAAPass } from 'three/examples/jsm/Addons.js';
 
+
 export class Engine {
 	loader: GLTFLoader
+	cubeLoader: THREE.CubeTextureLoader
 	textureLoader: THREE.TextureLoader
 	controls?: THREE.Controls<any>
 
@@ -21,16 +23,22 @@ export class Engine {
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
 		this.renderer.setClearColor(0x000000, 1);
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
+		this.renderer.setPixelRatio(window.devicePixelRatio);
 		this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 		this.scene = new THREE.Scene();
 
 		this.camera = new Camera();
 		this.textureLoader = new THREE.TextureLoader();
+		this.cubeLoader = new THREE.CubeTextureLoader();
 		this.loader = new GLTFLoader();
 		//this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 		this.composer = new EffectComposer(this.renderer);
-		this.composer.addPass(new RenderPass(this.scene, this.camera));
+		this.composer.setSize(window.innerWidth, window.innerHeight);
+		this.composer.setPixelRatio(window.devicePixelRatio);
+
+		this.composer.addPass(new RenderPass(this.scene, this.camera, null, null, null));
+
 		this.composer.addPass(new SMAAPass());
 		this.composer.addPass(new OutputPass());
 		//(this.controls as OrbitControls).enableZoom = false;
@@ -65,5 +73,9 @@ export class Engine {
 		}
 		//this.renderer.render(this.scene, this.camera);
 		this.composer.render();
+	}
+
+	dispose() {
+		this.composer.dispose();
 	}
 }

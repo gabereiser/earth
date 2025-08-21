@@ -11,7 +11,12 @@ const atmosphere = {
 	scaleDepth: 0.25,
 	mieScaleDepth: 0.1
 };
-
+const SkyboxUniforms = {
+	tDiffuse: {
+		type: "t",
+		value: 0
+	}
+}
 const AtmUniforms = {
 	v3LightPosition: {
 		type: "v3",
@@ -164,5 +169,5 @@ export {
 	vertexSky,
 	fragmentSky,
 	vertexGround,
-	fragmentGround
+	fragmentGround,
 }

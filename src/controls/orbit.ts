@@ -29,7 +29,7 @@ export function setupControls(camera: Camera): Camera {
 	document.addEventListener('mouseup', (_: MouseEvent) => { if (isClicking) { isClicking = false; }; });
 	document.addEventListener('wheel', (event) => {
 		if (camera.cam_mag < 12) {
-			if (camera.cam_mag > .205) { camera.cam_mag += Math.pow(camera.cam_mag, 1.5) * event.deltaY / (20000); }
+			if (camera.cam_mag > .105) { camera.cam_mag += Math.pow(camera.cam_mag, 1.5) * event.deltaY / (20000); }
 			else { if (event.deltaY > 0) { camera.cam_mag += Math.pow(camera.cam_mag, 1.5) * event.deltaY / (20000); } }
 		}
 		else { if (event.deltaY < 0) { camera.cam_mag += Math.pow(camera.cam_mag, 1.5) * event.deltaY / (20000); }; };
