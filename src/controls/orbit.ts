@@ -41,6 +41,7 @@ export function setupTouchControls(camera: Camera): Camera {
 		isClicking = false;
 	});
 	document.addEventListener("touchend", (e: TouchEvent) => {
+		e.preventDefault();
 		if (e.touches.length > 1) {
 			lastZoomTouch = null;
 		} else {
@@ -48,9 +49,10 @@ export function setupTouchControls(camera: Camera): Camera {
 		}
 	});
 	document.addEventListener("touchstart", (e: TouchEvent) => {
+		e.preventDefault();
 		if (e.touches.length > 1) {
 			//we are scrolling/zooming
-			const event = e.touches.item(0);
+			const event = e.touches.item(e.touches.length - 1); //people normally scroll with the second touch
 			if (lastZoomTouch == null) {
 				lastZoomTouch = event!;
 			}
@@ -62,9 +64,10 @@ export function setupTouchControls(camera: Camera): Camera {
 		}
 	});
 	document.addEventListener("touchmove", (e: TouchEvent) => {
+		e.preventDefault();
 		if (e.touches.length > 1) {
 			// we are scrolling/zooming
-			const event = e.touches.item(0);
+			const event = e.touches.item(e.touches.length - 1); //people normally scroll with the second touch
 			const delta = new THREE.Vector2(event!.clientX - lastZoomTouch!.clientX, event!.clientY - lastZoomTouch!.clientY);
 			if (camera.cam_mag < 12) {
 				if (camera.cam_mag > .105) { camera.cam_mag += Math.pow(camera.cam_mag, 1.5) * delta.y / (20000); }
@@ -88,15 +91,15 @@ export function setupTouchControls(camera: Camera): Camera {
 		}
 	});
 	// disable gestures to prevent mobile devices from fucking with the view.
-	document.addEventListener("gesturestart", function (e) {
+	document.addEventListener("gesturestart", function (e: Event) {
 		e.preventDefault();
 	});
 
-	document.addEventListener("gesturechange", function (e) {
+	document.addEventListener("gesturechange", function (e: Event) {
 		e.preventDefault();
 	});
 
-	document.addEventListener("gestureend", function (e) {
+	document.addEventListener("gestureend", function (e: Event) {
 		e.preventDefault();
 	});
 	return camera;
