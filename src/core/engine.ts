@@ -4,7 +4,7 @@ import { EffectComposer, SMAAPreset, ToneMappingMode } from 'postprocessing';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { ToneMappingEffect, EffectPass, RenderPass, SMAAEffect } from 'postprocessing';
-import { Planet } from '../planets/planet';
+import { BGM } from './audio';
 
 export class Engine {
 	loader: GLTFLoader
@@ -18,6 +18,7 @@ export class Engine {
 	scene: THREE.Scene
 	composer: EffectComposer
 
+	bgm: BGM
 	constructor() {
 		this.renderer = new THREE.WebGLRenderer({ antialias: false, stencil: false, depth: false });
 		this.renderer.setClearColor(0x000000, 1);
@@ -31,7 +32,7 @@ export class Engine {
 		this.textureLoader = new THREE.TextureLoader();
 		this.cubeLoader = new THREE.CubeTextureLoader();
 		this.loader = new GLTFLoader();
-		//this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+
 		this.composer = new EffectComposer(this.renderer, {
 			frameBufferType: THREE.HalfFloatType
 		});
@@ -42,14 +43,14 @@ export class Engine {
 		this.composer.addPass(new EffectPass(this.camera, new ToneMappingEffect({
 			adaptive: true,
 			mode: ToneMappingMode.REINHARD2_ADAPTIVE,
-			resolution: 1.0,
+			resolution: 0.8,
 			whitePoint: 0xffffff,
 			middleGrey: 0x888888,
 			adaptationRate: 0.9
 		}), new SMAAEffect({
 			preset: SMAAPreset.MEDIUM
 		})));
-
+		this.bgm = new BGM()
 		document.body.appendChild(this.renderer.domElement)
 	}
 

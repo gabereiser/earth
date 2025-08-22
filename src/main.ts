@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import './style.css'
 
 import { Engine } from './core/engine';
-import { Planet } from './planets/planet';
+import { Planet } from './planets/earth';
 
 import { setupControls, setupTouchControls } from './controls/orbit';
 
@@ -39,13 +39,15 @@ const emissive = engine.textureLoader.load(
     t.wrapT = THREE.RepeatWrapping;
   });
 const clouds = engine.textureLoader.load(
-  "planets/earth/8k_earth_clouds.png"
+  "planets/earth/16k_earth_clouds.png"
   , (t) => {
     t.minFilter = THREE.LinearFilter;
     t.magFilter = THREE.LinearFilter;
     t.wrapS = THREE.RepeatWrapping;
     t.wrapT = THREE.RepeatWrapping;
-  })
+  });
+
+
 const maxAnisotropy = engine.renderer.capabilities.getMaxAnisotropy();
 stars.anisotropy = maxAnisotropy;
 diffuse.anisotropy = maxAnisotropy;
@@ -55,9 +57,11 @@ const ambient = new THREE.AmbientLight(0x000000); // space is black yo
 engine.scene.add(ambient);
 
 const sun = new THREE.DirectionalLight(0xffffff, 3.5);
-sun.position.x = 10; // this is also set in the shaders uniforms, must always be normalized
+sun.position.x = 1; // this is also set in the shaders uniforms, must always be normalized
 sun.position.y = 0;
 sun.position.z = 0;
+sun.castShadow = true;
+sun.shadow.autoUpdate = true;
 engine.scene.add(sun);
 
 
@@ -78,10 +82,8 @@ window.addEventListener("resize", (_: UIEvent) => { engine.resize(); });
 
 const render = () => {
   engine.render();
-  planet.update(clock.getDelta());
-  planet._ground_update(engine.camera);
-  planet._atmosphere_update(engine.camera);
-
+  // three.js needs a dedicated update override, till then...
+  planet.update(clock.getDelta(), engine.camera);
 }
 engine.renderer.setAnimationLoop(render);
 const transitionDiv = document.createElement("div");
@@ -91,6 +93,7 @@ transitionDiv.id = "transition";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Done");
+  engine.bgm.play();
   transitionDiv.classList.add("invisible");
 })
 

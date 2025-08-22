@@ -87,11 +87,11 @@ export function setupTouchControls(camera: Camera): Camera {
 			const innermy = - (event!.clientY / innerHeight) * 2 - 1;
 			mouse.x = innermx; mouse.y = innermy + 2;
 			if (isClicking) {
-				camera.mpx -= (mp_refx - innermx) / 25;
-				if (Math.abs(camera.mpy) < pi_over2 * .98) { camera.mpy -= (mp_refy + innermy) / 25; }
+				camera.mpx -= (mp_refx - innermx) / 50;
+				if (Math.abs(camera.mpy) < pi_over2 * .90) { camera.mpy -= (mp_refy + innermy) / 50; }
 				else {
-					if (camera.mpy < -pi_over2 * .98) { if ((mp_refy + innermy) < 0) { camera.mpy -= (mp_refy + innermy) / 25; } }
-					else { if ((mp_refy + innermy) > 0) { camera.mpy -= (mp_refy + innermy) / 25; } }
+					if (camera.mpy < -pi_over2 * .90) { if ((mp_refy + innermy) < 0) { camera.mpy -= (mp_refy + innermy) / 50; } }
+					else { if ((mp_refy + innermy) > 0) { camera.mpy -= (mp_refy + innermy) / 50; } }
 				};
 			};
 		}
