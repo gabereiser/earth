@@ -66,8 +66,6 @@ export class Planet extends THREE.Group {
 			//color: 0xffffff,
 			map: this.cloudAlpha,
 			alphaMap: this.cloudAlpha,
-			bumpMap: this.cloudAlpha,
-			bumpScale: 16.0,
 			transparent: true,
 			depthWrite: true,
 			dithering: false,
@@ -77,15 +75,17 @@ export class Planet extends THREE.Group {
 
 		})
 		this.mesh = new THREE.Mesh(
-			new THREE.SphereGeometry(radius, 64, 128),
+			new THREE.SphereGeometry(radius * 1.0005, 512, 1024),
 			this.material
 		);
+		this.mesh.castShadow = true;
 		this.mesh?.geometry.computeTangents();
 
 		this.clouds = new THREE.Mesh(
-			new THREE.SphereGeometry(radius * 1.0025, 64, 128),
+			new THREE.SphereGeometry(radius * 1.0015, 512, 1024),
 			this.cloudMaterial
 		);
+		this.clouds.castShadow = true;
 		this.clouds?.geometry.computeTangents();
 		this.atmosphereMaterial = new THREE.ShaderMaterial({
 			uniforms: AtmUniforms,
@@ -93,15 +93,17 @@ export class Planet extends THREE.Group {
 			fragmentShader: fragmentSky,
 			side: THREE.BackSide,
 			transparent: true,
+			depthWrite: false,
 		});
 		this.atmosphere = new THREE.Mesh(
-			new THREE.SphereGeometry(radius * 1.01, 64, 128),
+			new THREE.SphereGeometry(radius * 1.015, 512, 1024),
 			this.atmosphereMaterial
 		);
 		this.atmosphere?.geometry.computeTangents();
+		this.add(this.atmosphere);
 		this.add(this.mesh);
 		this.add(this.clouds);
-		this.add(this.atmosphere);
+
 	}
 
 	update(dt: number, camera: Camera) {

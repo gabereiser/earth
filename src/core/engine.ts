@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Camera } from './camera';
-import { EffectComposer, SMAAPreset, ToneMappingMode } from 'postprocessing';
+import { ChromaticAberrationEffect, EffectComposer, SMAAPreset, ToneMappingMode } from 'postprocessing';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { ToneMappingEffect, EffectPass, RenderPass, SMAAEffect } from 'postprocessing';
@@ -20,11 +20,11 @@ export class Engine {
 
 	bgm: BGM
 	constructor() {
-		this.renderer = new THREE.WebGLRenderer({ antialias: false, stencil: false, depth: false });
+		this.renderer = new THREE.WebGLRenderer({ powerPreference: "high-performance", antialias: false, stencil: false, depth: false });
 		this.renderer.setClearColor(0x000000, 1);
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		this.renderer.setPixelRatio(window.devicePixelRatio);
-		this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+		this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 		this.scene = new THREE.Scene();
 
@@ -34,22 +34,26 @@ export class Engine {
 		this.loader = new GLTFLoader();
 
 		this.composer = new EffectComposer(this.renderer, {
-			frameBufferType: THREE.HalfFloatType
+			frameBufferType: THREE.FloatType
 		});
 		this.composer.setSize(window.innerWidth, window.innerHeight);
 
 		this.composer.addPass(new RenderPass(this.scene, this.camera));
 
-		this.composer.addPass(new EffectPass(this.camera, new ToneMappingEffect({
-			adaptive: true,
-			mode: ToneMappingMode.REINHARD2_ADAPTIVE,
-			resolution: 0.8,
-			whitePoint: 0xffffff,
-			middleGrey: 0x888888,
-			adaptationRate: 0.9
-		}), new SMAAEffect({
-			preset: SMAAPreset.MEDIUM
-		})));
+		this.composer.addPass(new EffectPass(this.camera,
+			new SMAAEffect({
+				preset: SMAAPreset.MEDIUM
+			})));
+		this.composer.addPass(new EffectPass(this.camera,
+			new ToneMappingEffect({
+				adaptive: true,
+				mode: ToneMappingMode.REINHARD2_ADAPTIVE,
+				resolution: 0.8,
+				whitePoint: 0xffffff,
+				middleGrey: 0x888888,
+				adaptationRate: 1.9,
+			})
+		))
 		this.bgm = new BGM()
 		document.body.appendChild(this.renderer.domElement)
 	}

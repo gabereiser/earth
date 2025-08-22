@@ -15,8 +15,8 @@ const stars = engine.cubeLoader.load([
   "skybox/left.png", //-px
   "skybox/top.png", //py
   "skybox/bottom.png", //-py
-  "skybox/back.png", //pz
-  "skybox/front.png" //-pz
+  "skybox/front.png", //pz
+  "skybox/back.png" //-pz
 ], (texture) => {
   engine.scene.background = texture;
 });
@@ -93,7 +93,7 @@ transitionDiv.id = "transition";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Done");
-  engine.bgm.play();
+  setTimeout(() => { engine.bgm.play(); }, 5000);
   transitionDiv.classList.add("invisible");
 })
 
