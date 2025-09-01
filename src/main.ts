@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opacity: 0
     }
   ], {
-    duration: "5s",
+    duration: 5000,
     fill: "auto",
     delay: 0,
     direction: "normal",
