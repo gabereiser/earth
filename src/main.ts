@@ -94,7 +94,20 @@ transitionDiv.id = "transition";
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Done");
   setTimeout(() => { engine.bgm.play(); }, 5000);
-  transitionDiv.classList.add("invisible");
+  transitionDiv.animate([
+    {
+      opacity: 1
+    },
+    {
+      opacity: 0
+    }
+  ], {
+    duration: "5s",
+    fill: "auto",
+    delay: 0,
+    direction: "normal",
+    iterations: 1
+  });
 })
 
 
