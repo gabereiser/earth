@@ -91,10 +91,10 @@ document.body.appendChild(transitionDiv);
 
 transitionDiv.id = "transition";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   console.log("Done");
   setTimeout(() => { engine.bgm.play(); }, 5000);
-  transitionDiv.animate([
+  await transitionDiv.animate([
     {
       opacity: 1
     },
@@ -108,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     direction: "normal",
     iterations: 1
   });
+  setTimeout(() => { document.body.removeChild(transitionDiv); }, 5000);
 })
 
 
