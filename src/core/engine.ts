@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import { Camera } from './camera';
-import { ChromaticAberrationEffect, EffectComposer, SMAAPreset, ToneMappingMode } from 'postprocessing';
+import { BlendFunction, ChromaticAberrationEffect, EffectComposer, KernelSize, SMAAPreset, ToneMappingMode } from 'postprocessing';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { ToneMappingEffect, EffectPass, RenderPass, SMAAEffect } from 'postprocessing';
+import { ToneMappingEffect, EffectPass, RenderPass, SMAAEffect, BloomEffect } from 'postprocessing';
 import { BGM } from './audio';
 
 export class Engine {
@@ -24,7 +24,7 @@ export class Engine {
 		this.renderer.setClearColor(0x000000, 1);
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		this.renderer.setPixelRatio(window.devicePixelRatio);
-		this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+		this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
 
 		this.scene = new THREE.Scene();
 
@@ -41,19 +41,27 @@ export class Engine {
 		this.composer.addPass(new RenderPass(this.scene, this.camera));
 
 		this.composer.addPass(new EffectPass(this.camera,
+			new BloomEffect({
+				intensity: 4,
+				blendFunction: BlendFunction.ADD,
+				kernelSize: KernelSize.LARGE,
+				width: window.innerWidth / 2,
+				height: window.innerHeight / 2,
+				luminanceThreshold: 1.0,
+				luminanceSmoothing: 0.5,
+			}),
 			new SMAAEffect({
 				preset: SMAAPreset.MEDIUM
-			})));
-		this.composer.addPass(new EffectPass(this.camera,
+			}),
 			new ToneMappingEffect({
 				adaptive: true,
 				mode: ToneMappingMode.REINHARD2_ADAPTIVE,
 				resolution: 0.8,
-				whitePoint: 0xffffff,
-				middleGrey: 0x888888,
+				whitePoint: 0xFFFFFF,
+				middleGrey: 0x777777,
 				adaptationRate: 1.9,
-			})
-		))
+			})));
+
 		this.bgm = new BGM()
 		document.body.appendChild(this.renderer.domElement)
 	}

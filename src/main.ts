@@ -94,21 +94,25 @@ transitionDiv.id = "transition";
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("Done");
   setTimeout(() => { engine.bgm.play(); }, 5000);
-  await transitionDiv.animate([
-    {
-      opacity: 1
-    },
-    {
-      opacity: 0
-    }
-  ], {
-    duration: 5000,
-    fill: "auto",
-    delay: 0,
-    direction: "normal",
-    iterations: 1
-  });
-  setTimeout(() => { document.body.removeChild(transitionDiv); }, 5000);
+
+  setTimeout(() => {
+    transitionDiv.animate([
+      {
+        opacity: 1
+      },
+      {
+        opacity: 0
+      }
+    ], {
+      duration: 5000,
+      fill: "auto",
+      delay: 0,
+      direction: "normal",
+      iterations: 1
+    }).addEventListener("finish", () => {
+      document.body.removeChild(transitionDiv);
+    });
+  }, 5000);
 })
 
 
